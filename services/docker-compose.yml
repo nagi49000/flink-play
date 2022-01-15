@@ -46,22 +46,22 @@ services:
       - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka_in1:9092,PLAINTEXT_HOST://localhost:29092
     depends_on:
       - zookeeper
-  kafka_out1:
-    image: docker.io/bitnami/kafka:latest
-    ports:
+#  kafka_out1:
+#    image: docker.io/bitnami/kafka:latest
+#    ports:
 #      - "7092:9092"
 #      - "7093:9093"
-      - "27092:29092"
+#      - "27092:29092"
 #    volumes:
 #      - "flink_play_kafka_out1_data:/bitnami"
-    environment:
-      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
-      - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,PLAINTEXT_HOST://:29092
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka_out1:9092,PLAINTEXT_HOST://localhost:29092
-    depends_on:
-      - zookeeper
+#    environment:
+#      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+#      - ALLOW_PLAINTEXT_LISTENER=yes
+#      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+#      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,PLAINTEXT_HOST://:29092
+#      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka_out1:9092,PLAINTEXT_HOST://localhost:29092
+#    depends_on:
+#      - zookeeper
 
 volumes:
   flink_play_zookeeper_data:
