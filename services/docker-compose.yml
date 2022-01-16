@@ -1,5 +1,11 @@
 version: "2.2"
 services:
+  # here purely for build; this image is used in other services
+  pyflink:
+    build:
+      context: ./pyflink
+      dockerfile: Dockerfile 
+
   jobmanager:
     image: pyflink:latest
     ports:
