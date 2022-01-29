@@ -4,6 +4,7 @@ from datetime import datetime
 from time import sleep
 import logging
 import json
+from names import get_full_name
 
 
 logging.basicConfig(level=logging.INFO)
@@ -16,10 +17,10 @@ producer = KafkaProducer(
 )
 
 # launch a limited number of messages
-for _ in range(5):
-    m = {"time": datetime.utcnow().isoformat() + "Z"}
-    producer.send("json-time-topic", m)
+for _ in range(15):
+    m = {"name": get_full_name().lower()}
+    producer.send("json-small-names-topic", m)
     logging.info(f"sent message {m}")
-    sleep(3)
+    sleep(0.5)
 producer.flush()
 producer.close(timeout=5)
