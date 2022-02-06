@@ -75,9 +75,12 @@ services:
     links:
       - "kafka_in1:kafka-flink-play"
 
-  pyflink-time-job:
+  pyflink-time-job-dummy:
+    # dummy job just to verify that the Python script can run (but not necc process anythin)
+    # at the time of writing, RemoteStreamExecution was not available in pyflink, so can't
+    # run pyflink job remotely from flink servers
     build:
-      context: ./pyflink-jobs/pyflink-time-job
+      context: ./pyflink-jobs/pyflink-time-job-dummy
       dockerfile: Dockerfile
     depends_on:
       - kafka_in1

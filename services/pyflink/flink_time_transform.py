@@ -20,7 +20,7 @@ def iso_to_unix_secs(iso_str):
 
 
 def run_flink_time_transform():
-    sleep_secs = 17  #debug
+    sleep_secs = 0  #debug
     logging.info(f"entering run_flink_time_transform and sleep for {sleep_secs} seconds")
     time.sleep(sleep_secs)
     logging.info(f"woken up after sleep for {sleep_secs} seconds")
@@ -29,9 +29,9 @@ def run_flink_time_transform():
     logging.warning("adding jars")
     # don't know why I need to specify these jars manually... really should just be picked up automatically
     env.add_jars(
-        "file:///usr/local/lib/python3.7/site-packages/pyflink/lib/flink-connector-kafka_2.11-1.14.3.jar",
-        "file:///usr/local/lib/python3.7/site-packages/pyflink/lib/flink-connector-base-1.14.3.jar",
-        "file:///usr/local/lib/python3.7/site-packages/pyflink/lib/kafka-clients-3.1.0.jar"  # later version for log4j CVE
+        "file:///opt/flink/opt/flink-connector-kafka_2.11-1.14.3.jar",
+        "file:///opt/flink/opt/flink-connector-base-1.14.3.jar",
+        "file:///opt/flink/opt/kafka-clients-3.1.0.jar"  # later version for log4j CVE
     )
 
     logging.warning(env)
