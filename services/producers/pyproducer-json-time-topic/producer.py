@@ -7,7 +7,7 @@ import json
 
 
 logging.basicConfig(level=logging.INFO)
-sleep(10)  # sleep whilst other services come up
+sleep(5)  # sleep whilst other services come up
 
 # hostname in bootstrap_servers obtained from link in docker-compose.yml
 producer = KafkaProducer(

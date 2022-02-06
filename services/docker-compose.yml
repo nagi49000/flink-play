@@ -71,6 +71,15 @@ services:
     links:
       - "kafka_in1:kafka-flink-play"
 
+  pyflink-time-job:
+    build:
+      context: ./pyflink-jobs/pyflink-time-job
+      dockerfile: Dockerfile
+    depends_on:
+      - kafka_in1
+    links:
+      - "kafka_in1:kafka-flink-play"
+
 volumes:
   flink_play_zookeeper_data:
     driver: local
