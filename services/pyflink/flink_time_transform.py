@@ -25,7 +25,7 @@ def run_flink_time_transform():
     time.sleep(sleep_secs)
     logging.info(f"woken up after sleep for {sleep_secs} seconds")
 
-    env = StreamExecutionEnvironment.get_execution_environment()
+    env = StreamExecutionEnvironment.get_execution_environment()  # this call resets the log level to WARNING
     logging.warning("adding jars")
     # don't know why I need to specify these jars manually... really should just be picked up automatically
     env.add_jars(
