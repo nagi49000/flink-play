@@ -12,6 +12,8 @@ services:
       - |
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
+    links:
+      - "kafka_in1:kafka-flink-play"
 
   taskmanager:
     build:
@@ -26,6 +28,8 @@ services:
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
         taskmanager.numberOfTaskSlots: 2
+    links:
+      - "kafka_in1:kafka-flink-play"
 
   zookeeper:
     image: docker.io/bitnami/zookeeper:latest
