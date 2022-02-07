@@ -76,9 +76,7 @@ services:
       - "kafka_in1:kafka-flink-play"
 
   pyflink-time-job:
-    # dummy job just to verify that the Python script can run (but not necc process anythin)
-    # at the time of writing, RemoteStreamExecution was not available in pyflink, so can't
-    # run pyflink job remotely from flink servers
+    # transform elements from json-time-topic and map to json-usecs-topic
     build:
       context: ./pyflink-jobs/pyflink-time-job
       dockerfile: Dockerfile
@@ -87,6 +85,15 @@ services:
     links:
       - "kafka_in1:kafka-flink-play"
       - "jobmanager:jobmanager-flink-play"
+
+  pyconsumer-json-usecs-topic:
+    build:
+      context: ./consumers/pyconsumer-json-usecs-topic/
+      dockerfile: Dockerfile
+    depends_on:
+      - kafka_in1
+    links:
+      - "kafka_in1:kafka-flink-play"
 
 volumes:
   flink_play_zookeeper_data:
