@@ -1,3 +1,4 @@
+import json
 import time
 import logging
 from datetime import datetime
@@ -7,16 +8,20 @@ from pyflink.datastream.connectors import FlinkKafkaConsumer
 from pyflink.datastream.connectors import FlinkKafkaProducer
 from pyflink.common.serialization import JsonRowDeserializationSchema
 from pyflink.common.serialization import JsonRowSerializationSchema
+from pyflink.common.serialization import SimpleStringSchema
 
 
 logging.basicConfig(level=logging.DEBUG)
 
 
-def iso_to_unix_secs(iso_str):
-    """ convert an ISO datetime str to microsecs since unix epoch """
-    dt = datetime.datetime.strptime(iso_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+def iso_to_unix_secs(s):
+    """ convert an json str like {'time': '2022-02-05T15:20:09.429963Z'} to microsecs since unix epoch
+        as a json str {'usecs': 164000980084}
+    """
+    dt_str = json.loads(s)["time"]
+    dt = datetime.strptime(dt_str, "%Y-%m-%dT%H:%M:%S.%fZ")
     usecs = time.mktime(dt.timetuple()) * 1000000 + dt.microsecond
-    return usecs
+    return json.dumps({"usecs": usecs})
 
 
 def run_flink_time_transform():
@@ -37,14 +42,10 @@ def run_flink_time_transform():
     logging.warning(env)
 
     # set up the ingest from kafka
-    # deserialize things JSON into {'time': '2022-02-05T15:20:09.429963Z'}
-    deserialization_schema = JsonRowDeserializationSchema.builder().type_info(
-        type_info=Types.ROW([Types.MAP(Types.STRING(), Types.STRING())])
-    ).build()
-
+    # contains JSON like {'time': '2022-02-05T15:20:09.429963Z'}
     kafka_consumer = FlinkKafkaConsumer(
         topics='json-time-topic',
-        deserialization_schema=deserialization_schema,
+        deserialization_schema=SimpleStringSchema(),
         properties={'bootstrap.servers': 'kafka-flink-play:9092'}
     )
 
@@ -52,22 +53,17 @@ def run_flink_time_transform():
 
     # perform streaming transform
     data_stream = data_stream.map(
-        lambda x: {'usecs': iso_to_unix_secs(x['time'])},
-        output_type=Types.MAP(Types.STRING(), Types.INT())
+        lambda x: iso_to_unix_secs(x),
+        output_type=Types.STRING()
     )
 
     data_stream.print()  # debug
 
     # send to a new kafka topic
-    # serialize to JSON
-    serialization_schema = JsonRowSerializationSchema.builder().with_type_info(
-        type_info=Types.ROW([Types.MAP(Types.STRING(), Types.INT())])
-    ).build()
-
     kafka_producer = FlinkKafkaProducer(
         topic='json-usecs-topic',
-        serialization_schema=serialization_schema,
-        producer_config={'bootstrap.servers': 'localhost:9092'}
+        serialization_schema=SimpleStringSchema(),
+        producer_config={'bootstrap.servers': 'kafka-flink-play:9092'}
     )
 
     data_stream.add_sink(kafka_producer)
