@@ -30,3 +30,5 @@ The flink jobs are:
 - a pyflink job converting iso times to microseconds since unix epoch (submits job to jobmanager)
 
 On running the demo, one should see the services come up, and the records flow through from producer, to taskmanager and to consumer.
+
+One should also be able to see the flink jobs live and running on the job manager UI at http://localhost:8081
