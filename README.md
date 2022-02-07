@@ -24,7 +24,9 @@ The kafka producers are:
 - a python producer publishing records of the form {'name': 'james bond'} to topic 'json-small-names-topic'
 
 The consumers are:
-- a python consumer subscribing to records of the form {'usecs': 1644276377272739.0} from topic 'json-usecs-topic'
+- a python consumer subscribing to records of the form {'usecs': 1644276377272739.0} from topic 'json-usecs-topic'. Records are published to docker logs.
 
 The flink jobs are:
 - a pyflink job converting iso times to microseconds since unix epoch (submits job to jobmanager)
+
+On running the demo, one should see the services come up, and the records flow through from producer, to taskmanager and to consumer.
