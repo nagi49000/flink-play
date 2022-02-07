@@ -12,6 +12,8 @@ services:
       - |
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
+    links:
+      - "kafka_in1:kafka-flink-play"
 
   taskmanager:
     build:
@@ -26,6 +28,8 @@ services:
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
         taskmanager.numberOfTaskSlots: 2
+    links:
+      - "kafka_in1:kafka-flink-play"
 
   zookeeper:
     image: docker.io/bitnami/zookeeper:latest
@@ -65,6 +69,26 @@ services:
   pyproducer-json-small-names-topic:
     build:
       context: ./producers/pyproducer-json-small-names-topic
+      dockerfile: Dockerfile
+    depends_on:
+      - kafka_in1
+    links:
+      - "kafka_in1:kafka-flink-play"
+
+  pyflink-time-job:
+    # transform elements from json-time-topic and map to json-usecs-topic
+    build:
+      context: ./pyflink-jobs/pyflink-time-job
+      dockerfile: Dockerfile
+    depends_on:
+      - kafka_in1
+    links:
+      - "kafka_in1:kafka-flink-play"
+      - "jobmanager:jobmanager-flink-play"
+
+  pyconsumer-json-usecs-topic:
+    build:
+      context: ./consumers/pyconsumer-json-usecs-topic/
       dockerfile: Dockerfile
     depends_on:
       - kafka_in1
