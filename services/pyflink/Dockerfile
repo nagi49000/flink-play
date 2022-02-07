@@ -28,6 +28,3 @@ ADD https://repo1.maven.org/maven2/org/apache/flink/flink-connector-kafka_2.11/1
     /opt/flink/opt/
 
 RUN chmod 755 /opt/flink/opt/*jar
-
-# copy across custom Pyflink jobs
-COPY flink_time_transform.py /opt/flink/pyflink-jobs/
