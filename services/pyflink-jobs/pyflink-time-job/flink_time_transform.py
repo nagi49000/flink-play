@@ -6,8 +6,6 @@ from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.common.typeinfo import Types
 from pyflink.datastream.connectors import FlinkKafkaConsumer
 from pyflink.datastream.connectors import FlinkKafkaProducer
-from pyflink.common.serialization import JsonRowDeserializationSchema
-from pyflink.common.serialization import JsonRowSerializationSchema
 from pyflink.common.serialization import SimpleStringSchema
 
 
