@@ -36,3 +36,5 @@ Global / cancelable := true
 
 // exclude Scala library from assembly
 assembly / assemblyOption  := (assembly / assemblyOption).value.copy(includeScala = false)
+
+scalacOptions := Seq("-unchecked", "-deprecation", "-feature")

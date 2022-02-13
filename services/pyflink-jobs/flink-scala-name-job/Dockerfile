@@ -13,3 +13,6 @@ COPY ./namejob/ ./
 # build jars via sbt
 RUN sbt clean assembly && \
     find ./ -name "*jar"
+
+# using CLI and options described on https://nightlies.apache.org/flink/flink-docs-release-1.2/setup/cli.html
+CMD ["flink", "run", "-c", "org.flinkplay.FlinkNameJob", "/job/target/scala-2.11/NameJob-assembly-0.1-SNAPSHOT.jar"]
