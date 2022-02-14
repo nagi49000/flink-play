@@ -19,6 +19,8 @@ package org.flinkplay
  */
 
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
+import org.apache.flink.connector.kafka.source.KafkaSource
+import org.apache.flink.connector.kafka.sink.KafkaSink
 
 /**
  * Skeleton for a Flink Job.
@@ -35,7 +37,8 @@ import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 object FlinkNameJob {
   def main(args: Array[String]) {
     println("entering FlinkNameJob.main")
-    val env = StreamExecutionEnvironment.createRemoteEnvironment("jobmanager-flink-play", 8081, jarFiles="/opt/flink/opt/")
+    val env = StreamExecutionEnvironment.getExecutionEnvironment
+    // val env = StreamExecutionEnvironment.createRemoteEnvironment("jobmanager-flink-play", 8081, jarFiles="/opt/flink/opt/")
 
 
     /**
