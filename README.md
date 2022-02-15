@@ -28,9 +28,21 @@ The kafka consumers are:
 - a python consumer subscribing to records of the form {'firstname': 'JAMES'} from kafka topic 'json-big-firstname-topic'. Records are published to docker logs.
 
 The flink jobs are:
-- a pyflink job converting iso times to microseconds since unix epoch (submits job to jobmanager)
-- a scala flink job coverting full names to uppercase first names (submits job to jobmanager)
+- a pyflink job (DataStream API) converting iso times to microseconds since unix epoch (submits job to jobmanager)
+- a scala flink job (DataStream API) converting full names to uppercase first names (submits job to jobmanager)
 
 On running the demo, one should see the services come up, and the records flow through from producer, to taskmanager and to consumer. The producers have a finite lifespan and rate, which can be adjusted in the associated producer.py files for the producer service.
 
 One should also be able to see the flink jobs live and running on the job manager UI at http://localhost:8081
+
+### References
+
+[Apache Flink website](https://flink.apache.org/)
+
+[Apache Flink Kafka connectors docs](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/connectors/datastream/kafka/)
+
+[Apache pyFlink DataStream API docs](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/dev/python/datastream_tutorial/)
+
+[Apache Flink Java/Scala DataStream API docs](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/dev/datastream/overview/)
+
+[Apache Flink mailing lists - including user community](https://flink.apache.org/community.html#mailing-lists)
