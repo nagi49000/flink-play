@@ -14,7 +14,7 @@ docker-compose up
 ```
 
 The demo has as core infrastructure:
-- a pyflink jobmanager (Apache Flink 1.4.3 running on Scala 2.11, with Python 3.7)
+- a pyflink jobmanager (Apache Flink 1.14.3 running on Scala 2.11, with Python 3.7)
 - a pyflink taskmanager (as above)
 - zookeeper (for kafka) (3.7.0)
 - a single node kafka server (3.1.0)
@@ -28,8 +28,8 @@ The kafka consumers are:
 - a python consumer subscribing to records of the form {'firstname': 'JAMES'} from kafka topic 'json-big-firstname-topic'. Records are published to docker logs.
 
 The flink jobs are:
-- a pyflink job (DataStream API) converting iso times to microseconds since unix epoch (submits job to jobmanager)
-- a scala flink job (DataStream API) converting full names to uppercase first names (submits job to jobmanager)
+- a pyflink job (DataStream API, Python 3.7, Flink 1.14.3) converting iso times to microseconds since unix epoch (submits job to jobmanager)
+- a scala flink job (DataStream API, Scala 2.11.12, Flink 1.14.3) converting full names to uppercase first names (submits job to jobmanager)
 
 On running the demo, one should see the services come up, and the records flow through from producer, to taskmanager and to consumer. The producers have a finite lifespan and rate, which can be adjusted in the associated producer.py files for the producer service.
 
