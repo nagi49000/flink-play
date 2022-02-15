@@ -14,10 +14,10 @@ docker-compose up
 ```
 
 The demo has as core infrastructure:
-- a pyflink jobmanager
-- a pyflink taskmanager
-- zookeeper (for kafka)
-- a single node kafka server
+- a pyflink jobmanager (Apache Flink 1.4.3 running on Scala 2.11, with Python 3.7)
+- a pyflink taskmanager (as above)
+- zookeeper (for kafka) (3.7.0)
+- a single node kafka server (3.1.0)
 
 The kafka producers are:
 - a python producer publishing records of the form {'time': '2022-02-07T23:26:17.272739Z'} to kafka topic 'json-time-topic'
