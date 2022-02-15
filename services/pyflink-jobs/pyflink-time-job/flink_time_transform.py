@@ -66,7 +66,7 @@ def run_flink_time_transform():
 
     data_stream.add_sink(kafka_producer)
 
-    env.execute()
+    env.execute("pyFlink timestamp to microsecs job")
 
 if __name__ == '__main__':
     run_flink_time_transform()

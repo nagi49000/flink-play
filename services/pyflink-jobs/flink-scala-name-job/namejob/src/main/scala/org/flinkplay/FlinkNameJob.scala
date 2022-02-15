@@ -1,31 +1,37 @@
 package org.flinkplay
 
 import org.apache.flink.streaming.api.scala._
-// import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.connector.kafka.source.KafkaSource
 import org.apache.flink.connector.kafka.sink.KafkaSink
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer
 import org.apache.flink.api.common.eventtime.WatermarkStrategy
 import org.apache.flink.api.common.serialization.SimpleStringSchema
-import org.apache.flink.api.common.typeinfo.TypeInformation
+import org.apache.flink.formats.json.JsonNodeDeserializationSchema
 
 
 object FlinkNameJob {
   def main(args: Array[String]) {
     println("entering FlinkNameJob.main")
     val env = StreamExecutionEnvironment.getExecutionEnvironment
-    // val env = StreamExecutionEnvironment.createRemoteEnvironment("jobmanager-flink-play", 8081, jarFiles="/opt/flink/opt/")
 
     val source = KafkaSource.builder()
       .setBootstrapServers("kafka-flink-play:9092")
       .setTopics("json-small-names-topic")
       .setStartingOffsets(OffsetsInitializer.earliest())
-      .setValueOnlyDeserializer(new SimpleStringSchema())
+      .setValueOnlyDeserializer(new JsonNodeDeserializationSchema())
       .build()
 
-    val data_stream = env.fromSource(source, WatermarkStrategy.noWatermarks(), "Kafka Source")
+    val dataStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), "Kafka Source")
+      .map(x => x.get("name").asText())
+      .map(x => x.toUpperCase())
+      .map(x => x.split(" ").head)
+      // .map(x => JsonNodeFactory.instance.objectNode().put("firstname", x))
 
-    data_stream.print()
+    dataStream.print()
+
+    val asNode = dataStream.map(x => Map("firstname" -> x))
+    asNode.print()
+
     /**
      * Here, you can start creating your execution plan for Flink.
      *
