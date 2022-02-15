@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 def iso_to_unix_secs(s):
     """ convert an json str like {'time': '2022-02-05T15:20:09.429963Z'} to microsecs since unix epoch
-        as a json str {'usecs': 164000980084}
+        as a json str {'usecs': 1644927167429963}
     """
     dt_str = json.loads(s)["time"]
     dt = datetime.strptime(dt_str, "%Y-%m-%dT%H:%M:%S.%fZ")
@@ -46,7 +46,8 @@ def run_flink_time_transform():
 
     data_stream = env.add_source(kafka_consumer)
 
-    # perform streaming transform
+    # perform streaming transform, map of JSONs:
+    # {'time': '2022-02-05T15:20:09.429963Z'} -> {'usecs': '1644276377429963'}
     data_stream = data_stream.map(
         lambda x: iso_to_unix_secs(x),
         output_type=Types.STRING()
@@ -55,6 +56,7 @@ def run_flink_time_transform():
     data_stream.print()  # debug
 
     # send to a new kafka topic
+    # contains JSON like {'usecs': '1644276377429963'}
     kafka_producer = FlinkKafkaProducer(
         topic='json-usecs-topic',
         serialization_schema=SimpleStringSchema(),
