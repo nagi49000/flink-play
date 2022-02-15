@@ -19,7 +19,7 @@ RUN apt-get update -y && \
     pip3 install apache-flink==1.14.3 && \
     mkdir /opt/flink/pyflink-jobs
 
-# add jars for Kafka connectors
+# add jars for Kafka connectors (kafka version 3.1.0)
 ADD https://repo1.maven.org/maven2/org/apache/kafka/kafka-clients/3.1.0/kafka-clients-3.1.0.jar \
     /opt/flink/opt/
 ADD https://repo1.maven.org/maven2/org/apache/flink/flink-connector-base/1.14.3/flink-connector-base-1.14.3.jar \

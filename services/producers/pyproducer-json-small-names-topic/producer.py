@@ -17,10 +17,10 @@ producer = KafkaProducer(
 )
 
 # launch a limited number of messages
-for _ in range(15):
+for _ in range(20):
     m = {"name": get_full_name().lower()}
     producer.send("json-small-names-topic", m)
     logging.info(f"sent message {m}")
-    sleep(0.5)
+    sleep(1.5)
 producer.flush()
 producer.close(timeout=5)

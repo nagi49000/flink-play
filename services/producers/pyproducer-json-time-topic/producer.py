@@ -16,7 +16,7 @@ producer = KafkaProducer(
 )
 
 # launch a limited number of messages
-for _ in range(5):
+for _ in range(10):
     m = {"time": datetime.utcnow().isoformat() + "Z"}
     producer.send("json-time-topic", m)
     logging.info(f"sent message {m}")

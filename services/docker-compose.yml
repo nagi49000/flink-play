@@ -32,7 +32,7 @@ services:
       - "kafka_in1:kafka-flink-play"
 
   zookeeper:
-    image: docker.io/bitnami/zookeeper:latest
+    image: docker.io/bitnami/zookeeper:3.7.0
     ports:
       - "2181:2181"
     volumes:
@@ -41,7 +41,7 @@ services:
       - ALLOW_ANONYMOUS_LOGIN=yes
 
   kafka_in1:
-    image: docker.io/bitnami/kafka:latest
+    image: docker.io/bitnami/kafka:3.1.0
     ports:
       - "9092:9092"
       - "9093:9093"
@@ -86,9 +86,29 @@ services:
       - "kafka_in1:kafka-flink-play"
       - "jobmanager:jobmanager-flink-play"
 
+  flink-scala-name-job:
+    # transform elements from json-small-names-topic and map to json-big-firstname-topic
+    build:
+      context: ./pyflink-jobs/flink-scala-name-job
+      dockerfile: Dockerfile
+    depends_on:
+      - kafka_in1
+    links:
+      - "kafka_in1:kafka-flink-play"
+      - "jobmanager:jobmanager-flink-play"
+
   pyconsumer-json-usecs-topic:
     build:
       context: ./consumers/pyconsumer-json-usecs-topic/
+      dockerfile: Dockerfile
+    depends_on:
+      - kafka_in1
+    links:
+      - "kafka_in1:kafka-flink-play"
+
+  pyconsumer-json-big-firstname-topic:
+    build:
+      context: ./consumers/pyconsumer-json-big-firstname-topic/
       dockerfile: Dockerfile
     depends_on:
       - kafka_in1
