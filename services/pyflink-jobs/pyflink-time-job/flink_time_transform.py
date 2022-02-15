@@ -23,10 +23,7 @@ def iso_to_unix_secs(s):
 
 
 def run_flink_time_transform():
-    sleep_secs = 0  #debug
-    logging.info(f"entering run_flink_time_transform and sleep for {sleep_secs} seconds")
-    time.sleep(sleep_secs)
-    logging.info(f"woken up after sleep for {sleep_secs} seconds")
+    logging.info("entering run_flink_time_transform")
 
     env = StreamExecutionEnvironment.get_execution_environment()  # this call resets the log level to WARNING
     logging.warning("adding jars")
