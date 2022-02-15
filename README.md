@@ -1,7 +1,7 @@
 # flink-play
 Simple examples using flink
 
-The demo can be built running
+The demo can be built running (the first build will take a while; lots of docker pulling, docker building and compilation)
 ```
 # in services/
 docker-compose build
