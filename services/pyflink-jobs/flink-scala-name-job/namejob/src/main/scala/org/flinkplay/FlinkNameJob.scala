@@ -36,22 +36,25 @@ object FlinkNameJob {
 
     val dataStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), "Kafka Source")
       .map(x => x.get("name").asText)
+      .map(x => x.toUpperCase)
+      .map(x => x.split(" ").head)
       .map(x => (x, x.length))
-      .keyBy(_ => None)  // add a keyBy, so we can use mapWithState, which has to follow the keyBy
+      .keyBy(x => None)  // add a keyBy, so we can use mapWithState, which has to follow the keyBy
+                         // here the keyBy is a single value; the keyBy could be a summary of "x", in which case there will be a ValueStore for each keyBy
                          // https://nightlies.apache.org/flink/flink-docs-master/docs/dev/datastream/fault-tolerance/state/
                          // http://www.alternatestack.com/development/apache-flink-mapwithstate-on-keyedstream/
       .mapWithState(
         (in: (String, Int), count: Option[Int]) => {
-          val ret = count match {
+          // input and output of mapWithState is a 2-tuple of (2-tuple, ValueStore)
+          // only the inner 2-tuple is pulled in from the previous stage, and sent to the next stage,
+          // the ValueStore, "count", which is of class Option (hence the Option/Some/None idiom), will be stored by Flink, and has scope within the mapWithState
+          // BEWARE, mapWithState does not have anything to put in a TTL on the state, so the state will live forever (scary if you are generating new unique keyBys).
+          count match {
             case Some(num) => ((in._1, num + in._2), Some(num + in._2))
-            case _ => ((in._1, in._2), Some(in._2))
+            case None => ((in._1, in._2), Some(in._2))
           }
-          ret
         }
       )
-      // .map(x => x._1)
-      .map(x => (x._1.toUpperCase, x._2))
-      .map(x => (x._1.split(" ").head, x._2))
       .map(x => Map("firstname" -> x._1, "totalchars" -> x._2))
       .map(x => Json(DefaultFormats).write(x))
 
