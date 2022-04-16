@@ -36,15 +36,17 @@ object FlinkNameJob {
 
     val dataStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), "Kafka Source")
       .map(x => x.get("name").asText)
-      .keyBy(x => x)  // add a keyBy, so we can use mapWithState, which has to follow the keyBy
-                      // https://nightlies.apache.org/flink/flink-docs-master/docs/dev/datastream/fault-tolerance/state/
-                      // http://www.alternatestack.com/development/apache-flink-mapwithstate-on-keyedstream/
+      .map(x => (x, x.length))
+      .keyBy(_ => None)  // add a keyBy, so we can use mapWithState, which has to follow the keyBy
+                         // https://nightlies.apache.org/flink/flink-docs-master/docs/dev/datastream/fault-tolerance/state/
+                         // http://www.alternatestack.com/development/apache-flink-mapwithstate-on-keyedstream/
       .mapWithState(
-        (in: String, count: Option[Int]) => {
-          count match {
-            case Some(num) => ((in, num + in.length), Some(num + in.length))
-            case _ => ((in, in.length), Some(in.length))
+        (in: (String, Int), count: Option[Int]) => {
+          val ret = count match {
+            case Some(num) => ((in._1, num + in._2), Some(num + in._2))
+            case _ => ((in._1, in._2), Some(in._2))
           }
+          ret
         }
       )
       // .map(x => x._1)
