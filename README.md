@@ -31,7 +31,7 @@ The flink jobs are:
 - a pyflink job (DataStream API, Python 3.7, Flink 1.14.3) converting iso times to microseconds since unix epoch (submits job to jobmanager)
 - a scala flink job (DataStream API, Scala 2.11.12, Flink 1.14.3) converting full names to uppercase first names (submits job to jobmanager)
 
-On running the demo, one should see the services come up, and the records flow through from producer, to taskmanager and to consumer. The producers have a finite lifespan and rate, which can be adjusted in the associated producer.py files for the producer service.
+On running the demo and observing the docker logs, one should see the services come up, and the records flow through from producer, to taskmanager and to consumer. The producers have a finite lifespan and rate, which can be adjusted in the associated producer.py files for the producer service.
 
 One should also be able to see the flink jobs live and running on the job manager UI at http://localhost:8081
 

@@ -38,20 +38,19 @@ object FlinkNameJob {
       .map(x => x.get("name").asText)
       .map(x => x.toUpperCase)
       .map(x => x.split(" ").head)
-      .map(x => (x, x.length))
       .keyBy(x => None)  // add a keyBy, so we can use mapWithState, which has to follow the keyBy
                          // here the keyBy is a single value; the keyBy could be a summary of "x", in which case there will be a ValueStore for each keyBy
                          // https://nightlies.apache.org/flink/flink-docs-master/docs/dev/datastream/fault-tolerance/state/
                          // http://www.alternatestack.com/development/apache-flink-mapwithstate-on-keyedstream/
       .mapWithState(
-        (in: (String, Int), count: Option[Int]) => {
-          // input and output of mapWithState is a 2-tuple of (2-tuple, ValueStore)
-          // only the inner 2-tuple is pulled in from the previous stage, and sent to the next stage,
-          // the ValueStore, "count", which is of class Option (hence the Option/Some/None idiom), will be stored by Flink, and has scope within the mapWithState
+        (in: String, count: Option[Int]) => {
+          // input of this mapWithState block is a 2-tuple of (string, ValueStore), and output is ((string, int), ValueStore)
+          // only the first element of the 2-tuples are pulled in from the previous stage, and sent to the next stage,
+          // the ValueStore, "count", which is of class Option (hence the Option/Some/None idiom), will be stored by Flink, and has scope ONLY within mapWithState
           // BEWARE, mapWithState does not have anything to put in a TTL on the state, so the state will live forever (scary if you are generating new unique keyBys).
           count match {
-            case Some(num) => ((in._1, num + in._2), Some(num + in._2))
-            case None => ((in._1, in._2), Some(in._2))
+            case Some(num) => ((in, num + in.length), Some(num + in.length))
+            case None => ((in, in.length), Some(in.length))
           }
         }
       )
