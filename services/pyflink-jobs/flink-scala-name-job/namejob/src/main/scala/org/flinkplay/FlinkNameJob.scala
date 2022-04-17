@@ -48,6 +48,7 @@ object FlinkNameJob {
           // only the first element of the 2-tuples are pulled in from the previous stage, and sent to the next stage,
           // the ValueStore, "count", which is of class Option (hence the Option/Some/None idiom), will be stored by Flink, and has scope ONLY within mapWithState
           // BEWARE, mapWithState does not have anything to put in a TTL on the state, so the state will live forever (scary if you are generating new unique keyBys).
+          //   - https://engineering.contentsquare.com/2021/ten-flink-gotchas/
           count match {
             case Some(num) => ((in, num + in.length), Some(num + in.length))
             case None => ((in, in.length), Some(in.length))
