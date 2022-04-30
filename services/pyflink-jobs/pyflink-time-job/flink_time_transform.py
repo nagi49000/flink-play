@@ -11,6 +11,7 @@ from pyflink.common.serialization import SimpleStringSchema
 
 logging.basicConfig(level=logging.DEBUG)
 FLINK_VERSION = "1.14.3"
+SCALA_VERSION = "2.11"
 
 
 def iso_to_unix_secs(s):
@@ -30,7 +31,7 @@ def run_flink_time_transform():
     logging.warning("adding jars")
     # don't know why I need to specify these jars manually... really should just be picked up automatically
     env.add_jars(
-        f"file:///opt/flink/opt/flink-connector-kafka_2.11-{FLINK_VERSION}.jar",
+        f"file:///opt/flink/opt/flink-connector-kafka_{SCALA_VERSION}-{FLINK_VERSION}.jar",
         f"file:///opt/flink/opt/flink-connector-base-{FLINK_VERSION}.jar",
         "file:///opt/flink/opt/kafka-clients-3.1.0.jar"  # later version for log4j CVE
     )

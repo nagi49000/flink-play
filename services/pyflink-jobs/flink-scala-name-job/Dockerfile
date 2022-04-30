@@ -1,5 +1,7 @@
 ARG FLINK_VERSION=1.14.3
-FROM flink:${FLINK_VERSION}-scala_2.11-java8
+ARG SCALA_VERSION=2.11
+FROM flink:${FLINK_VERSION}-scala_${SCALA_VERSION}-java8
+ENV scala_version=2.11
 
 RUN echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | tee /etc/apt/sources.list.d/sbt.list && \
     echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | tee /etc/apt/sources.list.d/sbt_old.list && \
@@ -16,4 +18,4 @@ RUN sbt clean assembly && \
     find ./ -name "*jar"
 
 # using CLI and options described on https://nightlies.apache.org/flink/flink-docs-release-1.2/setup/cli.html
-CMD ["flink", "run", "-m", "jobmanager-flink-play:8081", "-c", "org.flinkplay.FlinkNameJob", "/job/target/scala-2.11/NameJob-assembly-0.1-SNAPSHOT.jar"]
+CMD flink run -m jobmanager-flink-play:8081 -c org.flinkplay.FlinkNameJob /job/target/scala-${scala_version}/NameJob-assembly-0.1-SNAPSHOT.jar
