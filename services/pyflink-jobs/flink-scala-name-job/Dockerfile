@@ -1,7 +1,7 @@
-ARG FLINK_VERSION=1.14.3
-ARG SCALA_VERSION=2.11
+ARG FLINK_VERSION=1.14.4
+ARG SCALA_VERSION=2.12
 FROM flink:${FLINK_VERSION}-scala_${SCALA_VERSION}-java8
-ENV scala_version=2.11
+ENV scala_version=2.12
 
 RUN echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | tee /etc/apt/sources.list.d/sbt.list && \
     echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | tee /etc/apt/sources.list.d/sbt_old.list && \

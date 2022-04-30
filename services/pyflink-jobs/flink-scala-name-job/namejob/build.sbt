@@ -9,9 +9,9 @@ version := "0.1-SNAPSHOT"
 
 organization := "org.example"
 
-ThisBuild / scalaVersion := "2.11.12"
+ThisBuild / scalaVersion := "2.12.15"
 
-val flinkVersion = "1.14.0"
+val flinkVersion = "1.14.4"
 val kafkaVersion = "3.1.0"
 val json4sVersion = "4.0.4"
 

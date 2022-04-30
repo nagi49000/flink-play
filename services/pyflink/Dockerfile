@@ -1,8 +1,8 @@
-ARG FLINK_VERSION=1.14.3
-ARG SCALA_VERSION=2.11
+ARG FLINK_VERSION=1.14.4
+ARG SCALA_VERSION=2.12
 FROM flink:${FLINK_VERSION}-scala_${SCALA_VERSION}-java8
-ARG FLINK_VERSION=1.14.3
-ARG SCALA_VERSION=2.11
+ARG FLINK_VERSION=1.14.4
+ARG SCALA_VERSION=2.12
 
 # install python3: it has updated Python to 3.9 in Debian 11 and so install Python 3.7 from source
 # it currently only supports Python 3.6, 3.7 and 3.8 in PyFlink officially.

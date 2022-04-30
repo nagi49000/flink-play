@@ -10,8 +10,8 @@ from pyflink.common.serialization import SimpleStringSchema
 
 
 logging.basicConfig(level=logging.DEBUG)
-FLINK_VERSION = "1.14.3"
-SCALA_VERSION = "2.11"
+FLINK_VERSION = "1.14.4"
+SCALA_VERSION = "2.12"
 
 
 def iso_to_unix_secs(s):
