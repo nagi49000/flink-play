@@ -8,7 +8,7 @@ ARG SCALA_VERSION=2.12
 # it currently only supports Python 3.6, 3.7 and 3.8 in PyFlink officially.
 
 RUN apt-get update -y && \
-    apt-get install -y build-essential libssl-dev zlib1g-dev libbz2-dev libffi-dev && \
+    apt-get install -y build-essential libssl-dev zlib1g-dev libbz2-dev libffi-dev sqlite3 libsqlite3-dev && \
     wget https://www.python.org/ftp/python/3.7.9/Python-3.7.9.tgz && \
     tar -xvf Python-3.7.9.tgz && \
     cd Python-3.7.9 && \

@@ -2,10 +2,10 @@ from flink_time_transform import (
     iso_to_unix_secs,
     run_flink_time_transform
 )
-#from pyflink.testing import (
-#    source_sink_utils,
-#    test_case_utils
-#)
+from pyflink.testing import (
+    source_sink_utils,
+    test_case_utils
+)
 
 
 def test_iso_to_unix_secs():
@@ -14,5 +14,7 @@ def test_iso_to_unix_secs():
     assert r == '{"usecs": 1644074409429963}'
 
 
-def test_run_flink_time_transform():
-    pass
+class Testing(test_case_utils.PyFlinkStreamingTestCase):
+    def test_run_flink_time_transform(self):
+        self.assertEqual(1, 1)
+        # run_flink_time_transform()
