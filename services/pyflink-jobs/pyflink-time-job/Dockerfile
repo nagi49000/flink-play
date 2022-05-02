@@ -33,7 +33,6 @@ ADD https://repo1.maven.org/maven2/org/apache/avro/avro/${AVRO_VERSION}/avro-${A
 WORKDIR /test
 
 COPY *.py ./
-COPY test_data ./test_data
 
 RUN python3 -m pytest -s
 
