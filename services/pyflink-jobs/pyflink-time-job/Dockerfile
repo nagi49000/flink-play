@@ -12,7 +12,7 @@ ARG PYTHON_ROOT=/usr/local/lib/python3.7/
 ARG PYFLINK_TESTING_DIR=${PYTHON_ROOT}/site-packages/pyflink/testing/
 ARG PYFLINK_TESTING_URL=https://raw.githubusercontent.com/apache/flink/master/flink-python/pyflink/testing
 
-RUN pip3 install pytest-cov && \
+RUN pip3 install pytest-cov kafka-python && \
     mkdir -m 755 /usr/local/lib/python3.7/site-packages/pyflink/testing/ && \
     mkdir -m 755 -p /opt/flink/flink-formats/flink-avro/target/
 
@@ -33,8 +33,9 @@ ADD https://repo1.maven.org/maven2/org/apache/avro/avro/${AVRO_VERSION}/avro-${A
 WORKDIR /test
 
 COPY *.py ./
+COPY test_data ./test_data
 
-RUN python3 -m pytest
+RUN python3 -m pytest -s
 
 # actual image build for job
 FROM services_jobmanager:latest

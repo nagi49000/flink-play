@@ -24,7 +24,11 @@ def iso_to_unix_secs(s):
     return json.dumps({"usecs": usecs})
 
 
-def run_flink_time_transform(kafka_server="kafka-flink-play:9092"):
+def run_flink_time_transform(
+        kafka_server="kafka-flink-play:9092",
+        in_topic="json-time-topic",
+        out_topic="json-usecs-topic"
+):
     logging.info("entering run_flink_time_transform")
 
     env = StreamExecutionEnvironment.get_execution_environment()  # this call resets the log level to WARNING
@@ -36,12 +40,10 @@ def run_flink_time_transform(kafka_server="kafka-flink-play:9092"):
         "file:///opt/flink/opt/kafka-clients-3.1.0.jar"  # later version for log4j CVE
     )
 
-    logging.warning(env)
-
     # set up the ingest from kafka
     # contains JSON like {'time': '2022-02-05T15:20:09.429963Z'}
     kafka_consumer = FlinkKafkaConsumer(
-        topics="json-time-topic",
+        topics=in_topic,
         deserialization_schema=SimpleStringSchema(),
         properties={"bootstrap.servers": kafka_server}
     )
@@ -60,7 +62,7 @@ def run_flink_time_transform(kafka_server="kafka-flink-play:9092"):
     # send to a new kafka topic
     # contains JSON like {'usecs': '1644276377429963'}
     kafka_producer = FlinkKafkaProducer(
-        topic="json-usecs-topic",
+        topic=out_topic,
         serialization_schema=SimpleStringSchema(),
         producer_config={"bootstrap.servers": kafka_server}
     )
