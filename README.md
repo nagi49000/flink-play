@@ -35,7 +35,7 @@ On running the demo and observing the docker logs, one should see the services c
 
 One should also be able to see the flink jobs live and running on the job manager UI at http://localhost:8081 .
 
-Scala and Flink versions are set by variables at various places; to update, grep (ignoring case) for "version".
+Scala and Flink versions are set by variables at various places in the code; to update, grep (ignoring case) for "version" over the code base.
 
 ### References
 
